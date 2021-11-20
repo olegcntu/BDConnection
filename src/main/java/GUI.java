@@ -19,12 +19,11 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String inquiry = textField1.getText();
                 String result;
-                if (inquiry.toCharArray()[0] == 'S') {
+                if (inquiry.toCharArray()[0] == 'S' || inquiry.toCharArray()[0] == 's') {
                     result = Query.read(inquiry);
 
                 } else {
-                    int intResult = Update.update(inquiry);
-                    result=String.valueOf(intResult);
+                    result = Update.update(inquiry);
                 }
                 textArea1.setText(result);
 

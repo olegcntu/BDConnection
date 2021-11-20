@@ -29,7 +29,8 @@ public class Query {
             connection.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            result=e.toString();
+            return result;
         } finally {
             if (connection != null) {
                 try {
@@ -41,8 +42,6 @@ public class Query {
         }
         return result;
     }
-
-
 
 
 

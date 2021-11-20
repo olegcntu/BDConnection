@@ -3,20 +3,20 @@ import java.sql.*;
 // String st = "INSERT INTO bank (id,town) VALUES(17,'Chernigiv')";
 
 public class Update {
-    public static int update(String inquiry) {
+    public static String update(String inquiry) {
         Connection connection = null;
-        int result=-1;
+        String result = null;
         try {
             BDProcessor bdProcessor = new BDProcessor();
-            connection = bdProcessor.getConnection("jdbc:postgresql://localhost:5432/Bank","postgres","123re");
+            connection = bdProcessor.getConnection("jdbc:postgresql://localhost:5432/Bank", "postgres", "123re");
 
             Statement stmt = connection.createStatement();
 
 
-           result = stmt.executeUpdate(inquiry);
+            result = Integer.toString(stmt.executeUpdate(inquiry));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            result = e.toString();
         } finally {
             if (connection != null) {
                 try {
