@@ -1,48 +1,35 @@
 
 
 import java.sql.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-    //String st1 = "SELECT * FROM bank";
 
 public class Query {
+    public static final String JDBC_POSTGRESQL_LOCALHOST_5432_BANK = "jdbc:postgresql://localhost:5432/Bank";
+    public static final String RE = "123re";
+
+
     public static String read(String inquiry) {
-        Connection connection = null;
-        String result = null;
+        String result;
 
         try {
             BDProcessor bdProcessor = new BDProcessor();
-            connection = bdProcessor.getConnection("jdbc:postgresql://localhost:5432/Bank", "postgres", "123re");
+            try (Connection connection = bdProcessor.getConnection(JDBC_POSTGRESQL_LOCALHOST_5432_BANK, System.getenv("login"), System.getenv("password"))) {
 
-            Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                try (Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 
-
-            ResultSet rs;
-            rs = stmt.executeQuery(inquiry);
-            rs.afterLast();
-
-
-            result=Result(rs).toString();//запрос на вывод
-
-            stmt.close();
-            connection.close();
-
-        } catch (Exception e) {
-            result=e.toString();
-            return result;
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                    try (ResultSet rs = stmt.executeQuery(inquiry)) {
+                        rs.afterLast();
+                        result = Result(rs).toString();//запрос на вывод
+                    }
                 }
             }
+
+        } catch (Exception e) {
+            result = e.toString();
+            return result;
         }
         return result;
     }
-
 
 
     private static StringBuilder Result(ResultSet rs) throws SQLException {
@@ -50,14 +37,13 @@ public class Query {
 
         while (rs.previous()) {
             int columns = rs.getMetaData().getColumnCount();
-            for(int i=1;i<=columns;i++) {
-                res.append(rs.getObject(i) + " ");
+            for (int i = 1; i <= columns; i++) {
+                res.append(rs.getObject(i)).append(" ");
             }
             res.append("\n");
         }
         return res;
     }
-
 
 
 }

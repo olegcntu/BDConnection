@@ -31,9 +31,9 @@ public class GUI extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new GUI("Data base connection");
-        frame.setVisible(true);
+        public static void main(String[] args) {
+            JFrame frame = new GUI("Data base connection");
+            frame.setVisible(true);
 
-    }
+        }
 }
